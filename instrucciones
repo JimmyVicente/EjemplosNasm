@@ -1,0 +1,30 @@
+$ nasm -f elf64 -o prueba.o prueba.asm
+$ ld -o prueba prueba.o
+$ ./prueba
+
+
+Servicio 1 ==> Salida del programa  mov eax,1 
+Servicio 4 ==> Escritura  mov eax,4
+Servicio 3 ==> Lectura mov eax,3
+
+
+db ==> Directivas de datos
+resb ==> Directiva de datos variables
+
+
+
+***********EJECUTOR****************
+if [ $# -eq 1 ] 
+then
+	echo "compilando y ejecutando.."
+	nasm -f elf $1.asm; ld -m elf_i386 -s -o $1 $1.o
+	./$1
+else
+	echo "--------"
+	echo "ERROR"
+fi
+
+
+
+******PERMOSIOS A EJECUTOR**********
+sudo chmod +x ejecutor.sh
