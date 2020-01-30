@@ -22,7 +22,7 @@ segment .data
   lenPath equ $ -msjPath
 
   msjArchivo db 'Ingrese el directorio donde quiere guardar : '
-  lenArchivo $ -msjArchivo
+  lenArchivo equ $ -msjArchivo
 
 
 segment .bss
@@ -41,13 +41,13 @@ _start:
     mov ecx, 0x1FF   ;Definir el permiso 777
     int 80h
 
-    escribir msjArchivo, lenArchivo
-    leer archivo, 50
+    ;escribir msjArchivo, lenArchivo
+    ;leer archivo, 50
 
-    mov eax, 8		
-    mov ebx, archivo	
-    mov ecx, 0x1FF	
-    int 80h
+    ;mov eax, 8		
+    ;mov ebx, archivo	
+    ;mov ecx, 0x1FF	
+    ;int 80h
 
 
 salir:
