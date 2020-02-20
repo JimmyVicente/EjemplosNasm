@@ -33,21 +33,21 @@ segment .text
 	global _start
 _start:
 
-    escribir msjPath, lenPath
-    leer path, 50
+    ;escribir msjPath, lenPath
+    ;leer path, 50
 
-    mov eax, 39      ;servicio para crear un directorio
-    mov ebx, path    ;Define la ruta del servicio
-    mov ecx, 0x1FF   ;Definir el permiso 777
-    int 80h
-
-    ;escribir msjArchivo, lenArchivo
-    ;leer archivo, 50
-
-    ;mov eax, 8		
-    ;mov ebx, archivo	
-    ;mov ecx, 0x1FF	
+    ;mov eax, 39      ;servicio para crear un directorio
+    ;mov ebx, path    ;Define la ruta del servicio
+    ;mov ecx, 0x1FF   ;Definir el permiso 777
     ;int 80h
+
+    escribir msjArchivo, lenArchivo
+    leer archivo, 50
+
+    mov eax, 8		
+    mov ebx, archivo	
+    mov ecx, 0x1FF	
+    int 80h
 
 
 salir:

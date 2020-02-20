@@ -10,23 +10,23 @@ _start:
 
     mov ecx, 9
 l1:
-    push ecx
+    push ecx ;filas
+    push ecx ;columnas
     push ecx
     call printNewLine
     pop ecx
     mov eax, 10
     sub eax, ecx
+    mov ecx, eax
 
 l2:
     push ecx
-    push eax
+    push ecx
     call printEspace
-    pop eax
-    dec al
     pop ecx
-    cmp al, 0
-    je l3
-    jmp l2
+    pop ecx
+    loop l2
+    pop ecx
     
 
 l3: 
@@ -67,6 +67,7 @@ printAsterisco:
 
 
 salir:
+    call printNewLine
     call printNewLine
     mov eax, 1
     int 80h
