@@ -20,6 +20,8 @@ section .data
 
     msjP db ' no es primo',
     lenP equ $-msjP
+
+    newLine db '',10
 section .bss
     numero resb 1
     primo resb 1
@@ -64,9 +66,12 @@ esPrimo:
 
 imprimir:
     push eax 
-    add eax, '0'
+    mov bl, 10
+    div bl
+    add eax, '00'
     mov [primo], eax
-    escribir primo,1
+    escribir primo,2
+    escribir newLine,1
     pop eax
     inc al
     mov bl, 2

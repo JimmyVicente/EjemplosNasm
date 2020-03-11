@@ -37,10 +37,10 @@ _start:
     mov al, [numero]
     sub al, '0'
 
-    cmp al, 1
-    je presentarUno
+    cmp al, 1  ; si numero es igual 1 presenta 1
+    je presentarUno 
 
-    mov esi, 0
+    mov esi, 0 ;no se modifica el esi  y es el contador 
 
 division:
     mov bl, 2
@@ -49,7 +49,7 @@ division:
     escribir espace, 1
     pop ebx
     push ebx
-    mov al, bl
+    mov al, bl ; residuo 
     inc esi
     cmp al, 1
     je verFinal
@@ -73,7 +73,7 @@ presentar:
     mov [numero], ah
     escribir numero, 1
     pop ecx
-    loop presentar
+    loop presentar ;decrementa
     jmp salir
 
 presentarUno:
