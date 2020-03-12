@@ -19,8 +19,15 @@ section .data
     pathOr db '/home/jimmy/Documentos/ENSAMBLADOR/EjemplosNasm/EjerciciosCasa/3exameRepaso/arrayOr.txt',0
     newLine db '',10
 
+    mjsMenor db 'El número menor es: '
+    lenMenor equ $ -mjsMenor
+
+    mjsMayor db 'El número mayor es: '
+    lenMayor equ $ -mjsMayor
+
+
     ;Dfenir arreglo 
-    array db 0,0,0,0,0,0
+    array db 0,0,0,0,0,0,0
     lenArray equ $ -array
 
 section .bss
@@ -57,6 +64,9 @@ readFileNum1:
     mov edx, 0x1FF
     int 80h
 
+; iniciar ordenamiento
+    mov esi, array
+    mov edi, 0
 initOrder:
     ;asignacion en las posiciones efectivas
     mov esi, array
@@ -88,7 +98,6 @@ changePosition:
 chageAux:
     mov [aux], bl
 sizeArray:
-    ;sub edi, 1
     cmp edi, lenArray
     jb order
 
@@ -100,6 +109,7 @@ sizeArray:
 
     cmp cl,0
     jg initOrder
+; fin de ordenamiento
 
     mov esi, array
     mov edi, 0
@@ -113,6 +123,25 @@ printResult:
     add edi, 1
     cmp edi, lenArray
     jb printResult
+
+    mov esi, array
+    mov edi, 0
+
+printMayorMenor:
+    mov al, [esi]
+    mov [aux], al
+    write newLine, 1
+    write mjsMenor, lenMenor
+    write aux, 1
+
+    add esi, lenArray
+    add edi, lenArray
+    mov al, [esi]
+    mov [aux], al
+    write newLine, 1
+    write mjsMayor, lenMayor
+    write aux, 1
+    write newLine, 1
 
 writeResultFile:
     ;***access the file***
