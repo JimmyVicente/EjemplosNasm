@@ -22,7 +22,8 @@ section .bss
     num1 resb 1
     num2 resb 1
 
-    idNum resb 1
+    idNum1 resb 1
+    idNum2 resb 1
 
     suma resb 2
     idFile resb 1
@@ -39,10 +40,10 @@ readFileNum1:
 
     test eax, eax
     jz errorFile
-    mov dword[idNum], eax
+    mov dword[idNum1], eax
     
     mov eax, 3
-    mov ebx, [idNum]
+    mov ebx, [idNum1]
     mov ecx, num1
     mov edx, 1 ;len
     int 80h
@@ -50,7 +51,7 @@ readFileNum1:
     write num1,1
     ; close file 1
     mov eax, 6
-    mov ebx, [idNum]
+    mov ebx, [idNum1]
     mov ecx, 0
     mov edx, 0x1FF
     int 80h
@@ -66,9 +67,9 @@ readFileNum2:
 
     test eax, eax
     jz errorFile
-    mov dword[idNum], eax
+    mov dword[idNum2], eax
     mov eax, 3
-    mov ebx, [idNum]
+    mov ebx, [idNum2]
     mov ecx, num2
     mov edx, 1 ;len
     int 80h
@@ -76,7 +77,7 @@ readFileNum2:
     write num2,1
     ; close file 2
     mov eax, 6
-    mov ebx, [idNum]
+    mov ebx, [idNum2]
     mov ecx, 0
     mov edx, 0x1FF
     int 80h
@@ -99,7 +100,6 @@ writeFileMore:
      ;***access the file***
     mov eax, 8
     mov ebx, pathMore
-    mov ecx, 2
     mov edx, 0x1FF
     int 80h
 
