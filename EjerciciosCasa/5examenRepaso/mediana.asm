@@ -15,30 +15,36 @@
 %endmacro
 
 section .data
-    pathDes db '/home/jimmy/Documentos/ENSAMBLADOR/EjemplosNasm/EjerciciosCasa/3examenRepaso/arrayDes.txt',0
-    pathOr db '/home/jimmy/Documentos/ENSAMBLADOR/EjemplosNasm/EjerciciosCasa/3examenRepaso/arrayOr.txt',0
+    pathDes db '/home/jimmy/Documentos/ENSAMBLADOR/EjemplosNasm/EjerciciosCasa/5examenRepaso/array.txt',0
     newLine db '',10
 
-    mjsMenor db 'El número menor es: '
-    lenMenor equ $ -mjsMenor
+    mjsDes db 'Desordenado: '
+    lenDes equ $ -mjsDes
 
-    mjsMayor db 'El número mayor es: '
-    lenMayor equ $ -mjsMayor
+    mjsOr db 'Ordenado:    '
+    lenOr equ $ -mjsOr
 
+    mjsMedian db 'La mediana es: '
+    lenMedian equ $ -mjsMedian 
+    
+    mjsResidue db '.5'
+    lenResidue equ $- mjsResidue
 
     ;Dfenir arreglo 
-    array db 0,0,0,0,0,0,0
+    array db 0,0,0,0,0,0,0,0,0
     lenArray equ $ -array
 
 section .bss
     idArray resb 1
     aux resb 1
     idFile resb 1
+    ; median 
+    median resb 1
 section .text
     global _start
 _start:
 
-readFileNum1:
+readFileNum:
     mov eax, 5 
     mov ebx, pathDes
     mov ecx, 0
@@ -55,6 +61,7 @@ readFileNum1:
     mov edx, lenArray ;len
     int 80h
 
+    write mjsDes, lenDes
     write array,lenArray
     write newLine,1
     ; close file 1
@@ -109,66 +116,64 @@ sizeArray:
 
     cmp cl,0
     jg initOrder
-; fin de ordenamiento
+    ;
 
+printResultOrder:
+    write mjsOr, lenOr
+    write array, lenArray
+    write newLine, 1
+
+; Find median in array
+initMedian:
     mov esi, array
     mov edi, 0
 
-printResult:
+    mov al, lenArray
+    mov cl, 2
+    div cl
+
+    cmp ah, 0
+    je medianPair
+    jmp medianOdd
+
+medianPair:
+    call seePosition
     mov al, [esi]
-    ;add al,'0'
-    mov [aux], al
-    write aux, 1
-    add esi, 1
-    add edi, 1
-    cmp edi, lenArray
-    jb printResult
+    inc esi
+    inc edi
+    mov bl, [esi]
+    ;
+    add al, bl
+    ;
+    mov cl, 2
+    div cl
+    mov [median], al
+    add ah, '0'
+    write mjsMedian, lenMedian
+    write median, 1
+    write mjsResidue, lenResidue
+    write newLine, 1
+    jmp salir
 
-    mov esi, array
-    mov edi, 0
-
-printMayorMenor:
+medianOdd:
+    call seePosition
+    inc esi
+    inc edi
     mov al, [esi]
-    mov [aux], al
+    mov [median], al
+    write mjsMedian, lenMedian
+    write median, 1
     write newLine, 1
-    write mjsMenor, lenMenor
-    write aux, 1
+    jmp salir
 
-    add esi, lenArray
-    add edi, lenArray
-    mov al, [esi]
-    mov [aux], al
-    write newLine, 1
-    write mjsMayor, lenMayor
-    write aux, 1
-    write newLine, 1
-
-writeResultFile:
-    ;***access the file***
-    mov eax, 8
-    mov ebx, pathOr
-    mov edx, 0x1FF
-    int 80h
-
-    test eax,eax
-    jz salir
-
-    mov dword [idFile], eax
-
-    ;asigna el valor de la suma hacia el archivo
-    mov eax,4
-    mov ebx,[idFile]
-    mov ecx,array
-    mov edx,lenArray
-    int 80h
+seePosition:
+    inc esi
+    inc edi
+    dec al
+    cmp al, 1
+    jg seePosition
+    ret
     
-    ;****close file***
-    mov eax,6
-    mov ebx,[idFile]
-    mov ecx,0
-    mov edx,0x1FF
-    int 80h
-
 salir:
     mov eax, 1
     int 80h
